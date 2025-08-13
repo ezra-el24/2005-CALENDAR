@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SALGADO, RALPH JEZRAEL</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #ffe6f0;
+    }
+    h1 {
+        text-align: center;
+        color: #d63384;
+        margin-bottom: 40px;
+        font-size: 40px;
+        text-shadow: 1px 1px 2px #fff;
+        position: relative;
+    }
+    h1::before, h1::after {
+        content: "🎀";
+        font-size: 40px;
+        position: relative;
+        top: 4px;
+        margin: 0 15px;
+    }
+    .calendar {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        max-width: 1300px;
+        margin: auto;
+    }
+    .month {
+        background: #fff0f6;
+        border: 3px solid #ffb3d9;
+        border-radius: 15px;
+        padding: 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    .month::before {
+        content: "🎀";
+        font-size: 24px;
+        position: absolute;
+        top: -12px;
+        left: -12px;
+    }
+    .month::after {
+        content: "🎀";
+        font-size: 24px;
+        position: absolute;
+        top: -12px;
+        right: -12px;
+    }
+    .month h2 {
+        text-align: center;
+        margin-bottom: 10px;
+        color: #cc0066;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+        font-size: 14px;
+    }
+    th {
+        background: #ff99cc;
+        color: white;
+        padding: 5px 0;
+        border-radius: 4px;
+    }
+    td {
+        padding: 6px;
+        height: 28px;
+        vertical-align: middle;
+        border-radius: 4px;
+    }
+    .holiday {
+        background-color: #ffd6eb;
+        font-weight: bold;
+        color: #b30059;
+    }
+    .birthday {
+        background-color: #ff99cc;
+        font-weight: bold;
+        color: white;
+    }
+</style>
+</head>
+<body>
+
+<h1>2005 Calendar</h1>
+
+<div class="calendar"></div>
+
+<script>
+    // --- Define holidays ---
+    const holidays = {
+        "1-1": "New Year's Day",
+        "2-25": "EDSA People Power Anniversary",
+        "4-9": "Araw ng Kagitingan",
+        "4-24": "Easter Sunday",
+        "5-1": "Labor Day",
+        "6-12": "Independence Day",
+        "8-21": "Ninoy Aquino Day",
+        "8-29": "National Heroes Day",
+        "11-1": "All Saints' Day",
+        "11-24": "It's Jez Bday!", // custom event
+        "11-30": "Bonifacio Day",
+        "12-25": "Christmas Day",
+        "12-30": "Rizal Day"
+    };
+
+    const monthNames = [
+        "January","February","March","April","May","June",
+        "July","August","September","October","November","December"
+    ];
+    const days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+    function createMonth(year, month) {
+        const firstDay = new Date(year, month, 1);
+        const lastDate = new Date(year, month+1, 0).getDate();
+        let html = `<div class="month"><h2>${monthNames[month]} ${year}</h2>`;
+        html += "<table><thead><tr>";
+        for (let d of days) html += `<th>${d}</th>`;
+        html += "</tr></thead><tbody><tr>";
+
+        // Empty cells before first day
+        for (let i=0; i<firstDay.getDay(); i++) html += "<td></td>";
+
+        // Fill days of month
+        for (let date=1; date<=lastDate; date++) {
+            const dayOfWeek = new Date(year, month, date).getDay();
+            const key = `${month+1}-${date}`;
+            let cls = "";
+            if (holidays[key]) {
+                cls = (key==="11-24") ? "birthday" : "holiday";
+            }
+            html += `<td class="${cls}" title="${holidays[key] || ""}">${date}</td>`;
+            if (dayOfWeek === 6 && date !== lastDate) html += "</tr><tr>";
+        }
+
+        // Empty cells at end
+        const endDay = new Date(year, month, lastDate).getDay();
+        for (let i=endDay; i<6; i++) html += "<td></td>";
+
+        html += "</tr></tbody></table></div>";
+        return html;
+    }
+
+    // --- Render full year ---
+    const container = document.querySelector('.calendar');
+    let htmlYear = "";
+    for (let m=0; m<12; m++) {
+        htmlYear += createMonth(2005, m);
+    }
+    container.innerHTML = htmlYear;
+</script>
+
+</body>
+</html>
