@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2005 Girly Calendar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --light-pink: #fde8f2;
+            --medium-pink: #f7a2d4;
+            --dark-pink: #e37abf;
+            --dark-text: #4a4a4a;
+            --white-text: #ffffff;
+            --border-color: #f0e1e9;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark-text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            min-height: 100vh;
+            /* Coquette-style background with a repeating pattern */
+            background-color: var(--light-pink);
+            background-image: radial-gradient(var(--medium-pink) 1px, transparent 1px), radial-gradient(var(--medium-pink) 1px, var(--light-pink) 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+
+        .calendar-container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border: 5px solid var(--medium-pink);
+        }
+
+        .header {
+            text-align: center;
+            font-family: 'Satisfy', cursive;
+            font-size: 5rem;
+            color: var(--dark-pink);
+            margin-bottom: 2rem;
+            position: relative;
+            padding-top: 20px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .bow-left, .bow-right {
+            position: absolute;
+            top: 0;
+            font-size: 8rem;
+            line-height: 1;
+            color: var(--medium-pink);
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .bow-left {
+            left: 0;
+            transform: scaleX(-1) rotate(15deg);
+        }
+        
+        .bow-right {
+            right: 0;
+            transform: rotate(-15deg);
+        }
+        
+        .months-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .month-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            border: 2px solid var(--border-color);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .month-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .month-title {
+            font-family: 'Satisfy', cursive;
+            font-size: 2.5rem;
+            color: var(--dark-pink);
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .day-header {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            color: var(--dark-text);
+        }
+        
+        .day-cell {
+            padding: 0.5rem;
+            text-align: center;
+            border-radius: 6px;
+            background-color: var(--light-pink);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .day-cell:hover:not(.empty-day) {
+            transform: scale(1.05);
+            background-color: var(--medium-pink);
+            color: var(--white-text);
+        }
+
+        .empty-day {
+            background-color: transparent;
+            border: 1px solid transparent;
+        }
+
+        .holiday {
+            color: var(--white-text);
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .ph-holiday {
+            background-color: #d354a5;
+        }
+        
+        .birthday {
+            background-color: #ff69b4;
+        }
+
+        .ph-holiday:hover { background-color: #b33989; }
+        .birthday:hover { background-color: #ff1493; }
+
+        .holiday-note {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            font-size: 0.6rem;
+            color: var(--white-text);
+            padding: 2px 4px;
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, 0.2);
+            line-height: 1;
+        }
+        
+        .holiday-notes-container {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                font-size: 3rem;
+            }
+            .months-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calendar-container">
+        <h1 class="header">
+            <div class="bow-left">
+                ౨ৎ
+            </div>
+            2005
+            <div class="bow-right">
+                ౨ৎ
+            </div>
+        </h1>
+
+        <div id="months-grid" class="months-grid"></div>
+    </div>
+    </style>
+</head>
+<body>
+
+    <div class="calendar-container">
+        <h1 class="header">
+            <div class="bow-left">
+                ౨ৎ
+            </div>
+            2005
+            <div class="bow-right">
+                ౨ৎ
+            </div>
+        </h1>
+
+        <div id="months-grid" class="months-grid"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const monthsGrid = document.getElementById('months-grid');
+            const months = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            const daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"];
+            const year = 2005;
+
+            // Philippines and Birthday events for 2005.
+            const events = {
+                "01-01": [{ name: "New Year's Day", type: "ph-holiday" }],
+                "01-21": [{ name: "Eid al-Adha", type: "ph-holiday" }],
+                "02-25": [{ name: "People Power Anniversary", type: "ph-holiday" }],
+                "03-24": [{ name: "Maundy Thursday", type: "ph-holiday" }],
+                "03-25": [{ name: "Good Friday", type: "ph-holiday" }],
+                "03-26": [{ name: "Black Saturday", type: "ph-holiday" }],
+                "04-09": [{ name: "The Day of Valor", type: "ph-holiday" }],
+                "05-01": [{ name: "Labor Day", type: "ph-holiday" }],
+                "06-12": [{ name: "Independence Day", type: "ph-holiday" }],
+                "07-25": [{ name: "Special Non-working Day (Metro Manila)", type: "ph-holiday" }],
+                "08-21": [{ name: "Ninoy Aquino Day", type: "ph-holiday" }],
+                "08-29": [{ name: "National Heroes Day", type: "ph-holiday" }],
+                "11-01": [{ name: "All Saints' Day", type: "ph-holiday" }],
+                "11-24": [{ name: "Jez Born Day", type: "birthday" }],
+                "11-28": [{ name: "Special Non-working Holiday", type: "ph-holiday" }],
+                "11-30": [{ name: "Bonifacio Day", type: "ph-holiday" }],
+                "12-25": [{ name: "Christmas Day", type: "ph-holiday" }],
+                "12-30": [{ name: "Rizal Day", type: "ph-holiday" }],
+                "12-31": [{ name: "New Year's Eve", type: "ph-holiday" }],
+            };
+
+            months.forEach((month, index) => {
+                const monthCard = document.createElement('div');
+                monthCard.className = 'month-card';
+
+                const monthTitle = document.createElement('h2');
+                monthTitle.className = 'month-title';
+                monthTitle.textContent = month;
+                monthCard.appendChild(monthTitle);
+
+                const daysHeader = document.createElement('div');
+                daysHeader.className = 'days-grid';
+                daysOfWeek.forEach(day => {
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = 'day-header';
+                    dayHeader.textContent = day;
+                    daysHeader.appendChild(dayHeader);
+                });
+                monthCard.appendChild(daysHeader);
+
+                const daysGrid = document.createElement('div');
+                daysGrid.className = 'days-grid';
+
+                const firstDay = new Date(year, index, 1);
+                const startingDay = firstDay.getDay(); // 0 for Sunday, 1 for Monday, etc.
+                const daysInMonth = new Date(year, index + 1, 0).getDate();
+
+                // Add empty cells for the starting day of the week
+                for (let i = 0; i < startingDay; i++) {
+                    const emptyCell = document.createElement('div');
+                    emptyCell.className = 'day-cell empty-day';
+                    daysGrid.appendChild(emptyCell);
+                }
+
+                // Add day cells
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const dayCell = document.createElement('div');
+                    dayCell.className = 'day-cell';
+                    dayCell.textContent = i;
+                    
+                    const dateKey = `${(index + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
+                    const dayEvents = events[dateKey];
+
+                    if (dayEvents) {
+                        dayCell.classList.add('holiday');
+                        dayCell.classList.add(dayEvents[0].type);
+                        
+                        dayCell.title = dayEvents.map(e => e.name).join(' and ');
+                        
+                        dayCell.addEventListener('click', () => {
+                            window.open(`https://www.google.com/search?q=${encodeURIComponent(dayEvents[0].name)}+2005+holiday`, '_blank');
+                        });
+                        
+                        const notesContainer = document.createElement('div');
+                        notesContainer.className = 'holiday-notes-container';
+                        
+                        dayEvents.forEach(event => {
+                            const eventNote = document.createElement('span');
+                            eventNote.className = 'holiday-note';
+                            
+                            if (event.type === 'ph-holiday') eventNote.textContent = 'PH';
+                            else if (event.type === 'birthday') eventNote.textContent = 'B-Day';
+                            
+                            notesContainer.appendChild(eventNote);
+                        });
+                        
+                        dayCell.appendChild(notesContainer);
+                    }
+                    
+                    daysGrid.appendChild(dayCell);
+                }
+
+                monthCard.appendChild(daysGrid);
+                monthsGrid.appendChild(monthCard);
+            });
+        });
+    </script>
+</body>
+</html>
